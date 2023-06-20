@@ -22,14 +22,14 @@ public class TodoItem {
     private UUID todoItemId;
     @Column(name = "item_value", columnDefinition="text", nullable = false)
     private String itemValue;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone="GMT+2")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone="Europe/Warsaw")
     @Column(name = "crated_on", nullable = false)
     private ZonedDateTime createdOn;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone="GMT+2")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone="Europe/Warsaw")
     @Column(name = "last_edit_on")
     private ZonedDateTime lastEditOn = null;
 //  another possible pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" didn't work as well as this one
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone="GMT+2")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone="Europe/Warsaw")
     @Column(name = "deadline")
     private ZonedDateTime deadline = null;
     @Column(name = "done")
