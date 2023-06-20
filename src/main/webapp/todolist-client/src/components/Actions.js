@@ -32,6 +32,9 @@ export default function Actions(props) {
         setPreviousValue(props.taskRef?.current?.value);
         props.setReadOnly(false);
         props.taskRef?.current?.focus();
+        // props.taskRef.current.selectionStart = props.taskRef.current.value.length;
+        // props.taskRef.current.selectionEnd = props.taskRef.current.value.length;
+
         setEdited(true);
         await updateIsEdited(true).catch();
     }
@@ -72,10 +75,11 @@ export default function Actions(props) {
         await updateIsEdited(false).catch()
         props.setReadOnly(true);
         props.taskRef?.current?.blur();
+        // props.taskRef?.current?.setSelectionRange(0, 0);
     }
 
     async function handleUndo() {
-        props.taskRef?.current?.focus();
+        // props.taskRef?.current?.focus();
         props.setTaskValue(previousValue);
         setEdited(false);
         await updateIsEdited(false).catch()

@@ -26,6 +26,7 @@ export default function(props) {
 
     return (<div className="task">
         <TaskItem
+            task={props.task}
             taskId={props.task?.todoItemId}
             isChecked={props.task?.checked}
             isReadOnly={isReadOnly}

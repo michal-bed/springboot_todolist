@@ -1,16 +1,48 @@
 import '../main.css';
-import {useEffect, useState} from "react";
+import {useEffect, useLayoutEffect, useState} from "react";
 import {Checkbox, Fade, Tooltip, Zoom} from "@mui/material";
 import axios from "axios";
 import {REST_API_PORT} from "../App";
 
 export default function TaskItem(props) {
     const [isChecked, setIsChecked] = useState(props?.isChecked ?? false);
-    function handleChecked() {
-        setIsChecked((prev) => !prev);
+
+    function setCaretPosition(ctrl, pos) {
+        // Modern browsers
+        if (ctrl.setSelectionRange) {
+            ctrl.focus();
+            ctrl.setSelectionRange(pos, pos);
+            ctrl.blur();
+
+            // IE8 and below
+        } else if (ctrl.createTextRange) {
+            var range = ctrl.createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', pos);
+            range.moveStart('character', pos);
+            range.select();
+        }
+    }
+
+    function scrollToInputEnd() {
+        console.log("scrollWidth", props.taskRef.current.scrollWidth);
+        console.log("clientWidth", props.taskRef.current.clientWidth);
+        console.log("scrollLeft", props.taskRef.current.scrollLeft);
+
+        const scrollLeft = props.taskRef.current.scrollWidth - props.taskRef.current.clientWidth;
+        props.taskRef.current.scrollLeft = scrollLeft;
     }
 
     useEffect(() => {
+        if(!props.taskRef?.current?.readOnly && document.activeElement === props.taskRef?.current) {
+            console.log("Active element")
+            scrollToInputEnd();
+        }
+        else {
+            setCaretPosition(props.taskRef?.current, 0)
+        }});
+
+        useEffect(() => {
         const updateIsChecked = async () => {
             const res = await axios.patch(`http://localhost:${REST_API_PORT}/api/todo-item/is-checked`,
                 { id: props.taskId, checked: isChecked }
@@ -31,6 +63,7 @@ export default function TaskItem(props) {
                 {
                     console.log("Saving started");
                     props.setIfSave(true);
+                    props.taskRef?.current?.blur();
                 }
             }
         };
@@ -72,6 +105,7 @@ export default function TaskItem(props) {
                 readOnly={props.isReadOnly}
                 onChange={props.handleValueChange}
                 ref={props.taskRef}
+                style = {{overflowX: 'scroll'}}
                 onFocus={(e)=>e.currentTarget.setSelectionRange(e.currentTarget.value.length, e.currentTarget.value.length)}
             />
         </Tooltip>
