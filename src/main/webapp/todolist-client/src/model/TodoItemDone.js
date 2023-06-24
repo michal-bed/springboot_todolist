@@ -1,7 +1,7 @@
 export class TodoItemValue {
     constructor(id, done) {
         this.id = id;
-        this.done = value;
+        this.done = done;
     }
 
     id;
